@@ -3,11 +3,11 @@ package services
 import (
 	"context"
 
-	"github.com/siddk/kube-resource-manager/internal/domain/models"
-	"github.com/siddk/kube-resource-manager/internal/engine/recommendation"
-	"github.com/siddk/kube-resource-manager/internal/engine/validation"
-	"github.com/siddk/kube-resource-manager/internal/logger"
-	"github.com/siddk/kube-resource-manager/internal/observability"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/domain/models"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/engine/recommendation"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/engine/validation"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/logger"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/observability"
 )
 
 // OptimizerService is the primary service for processing metrics and generating recommendations.

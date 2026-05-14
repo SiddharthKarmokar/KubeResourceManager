@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/siddk/kube-resource-manager/internal/logger"
-	"github.com/siddk/kube-resource-manager/internal/observability"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/logger"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/observability"
 )
 
 // Metrics records Prometheus metrics for each request.

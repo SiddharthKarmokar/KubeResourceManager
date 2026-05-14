@@ -37,7 +37,7 @@ CI builds MkDocs on pushes to `main` (when docs change) and publishes the static
 
 **Enable Pages:** Repository **Settings → Pages → Build and deployment → Source: Deploy from a branch → `gh-pages` / `/ (root)`**.
 
-If your GitHub username or repository name differs from `siddk/kube-resource-manager`, update `site_url` (and optionally `repo_url`) in `mkdocs.yml` so canonical links resolve correctly.
+Canonical URLs are set in `mkdocs.yml` for **`SiddharthKarmokar/KubeResourceManager`**; adjust `site_url` / `repo_url` if you rename the repository.
 
 ## Production hardening checklist
 

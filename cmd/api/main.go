@@ -10,15 +10,15 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/siddk/kube-resource-manager/internal/api/handlers"
-	"github.com/siddk/kube-resource-manager/internal/api/router"
-	"github.com/siddk/kube-resource-manager/internal/config"
-	"github.com/siddk/kube-resource-manager/internal/engine/recommendation"
-	"github.com/siddk/kube-resource-manager/internal/engine/scoring"
-	"github.com/siddk/kube-resource-manager/internal/logger"
-	"github.com/siddk/kube-resource-manager/internal/services"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/api/handlers"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/api/router"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/config"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/engine/recommendation"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/engine/scoring"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/logger"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/services"
 
-	_ "github.com/siddk/kube-resource-manager/swagger" // register OpenAPI spec with swag
+	_ "github.com/SiddharthKarmokar/KubeResourceManager/swagger" // register OpenAPI spec with swag
 )
 
 // @title Kubernetes Resource Optimization API
@@ -28,7 +28,7 @@ import (
 
 // @contact.name Siddharh Karmokar
 // @contact.url https://siddkarmokar-portfolio.vercel.app/
-// @contact.email support@example.com
+// @contact.email siddkarmokar@gmail.com
 
 // @license.name MIT
 // @license.url https://opensource.org/licenses/MIT

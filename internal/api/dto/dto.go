@@ -1,6 +1,6 @@
 package dto
 
-import "github.com/siddk/kube-resource-manager/internal/domain/models"
+import "github.com/SiddharthKarmokar/KubeResourceManager/internal/domain/models"
 
 // AnalyzeRequest is the incoming batch of metrics.
 type AnalyzeRequest []models.WorkloadMetrics

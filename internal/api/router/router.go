@@ -6,8 +6,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/siddk/kube-resource-manager/internal/api/handlers"
-	"github.com/siddk/kube-resource-manager/internal/api/middleware"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/api/handlers"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/api/middleware"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 

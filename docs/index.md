@@ -15,7 +15,7 @@ Welcome to the documentation for the **Kubernetes Resource Optimization Agent** 
 
 ## Quick links
 
-- **Source code:** [github.com/siddk/kube-resource-manager](https://github.com/siddk/kube-resource-manager)
+- **Source code:** [github.com/SiddharthKarmokar/KubeResourceManager](https://github.com/SiddharthKarmokar/KubeResourceManager)
 - **Author:** Siddharh Karmokar — [Portfolio](https://siddkarmokar-portfolio.vercel.app/)
 - **Live docs (GitHub Pages):** after enabling Pages from the `gh-pages` branch, the site is published at the URL configured in `mkdocs.yml` (`site_url`).
 

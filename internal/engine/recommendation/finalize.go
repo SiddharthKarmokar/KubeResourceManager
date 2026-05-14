@@ -1,8 +1,8 @@
 package recommendation
 
 import (
-	"github.com/siddk/kube-resource-manager/internal/config"
-	"github.com/siddk/kube-resource-manager/internal/domain/models"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/config"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/domain/models"
 )
 
 // finalizeRecommendations enforces conservative invariants: recommendations never

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/siddk/kube-resource-manager/internal/config"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/config"
 	"github.com/stretchr/testify/assert"
 )
 

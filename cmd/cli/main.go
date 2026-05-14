@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/siddk/kube-resource-manager/internal/config"
-	"github.com/siddk/kube-resource-manager/internal/domain/models"
-	"github.com/siddk/kube-resource-manager/internal/engine/recommendation"
-	"github.com/siddk/kube-resource-manager/internal/engine/scoring"
-	"github.com/siddk/kube-resource-manager/internal/logger"
-	"github.com/siddk/kube-resource-manager/internal/services"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/config"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/domain/models"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/engine/recommendation"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/engine/scoring"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/logger"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/services"
 	"github.com/spf13/cobra"
 )
 

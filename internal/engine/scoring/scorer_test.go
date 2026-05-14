@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/siddk/kube-resource-manager/internal/domain/enums"
-	"github.com/siddk/kube-resource-manager/internal/domain/models"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/domain/enums"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/domain/models"
 	"github.com/stretchr/testify/assert"
 )
 

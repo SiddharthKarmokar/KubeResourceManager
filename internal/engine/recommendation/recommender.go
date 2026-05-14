@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/siddk/kube-resource-manager/internal/config"
-	"github.com/siddk/kube-resource-manager/internal/domain/models"
-	"github.com/siddk/kube-resource-manager/internal/engine/heuristics"
-	"github.com/siddk/kube-resource-manager/internal/engine/scoring"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/config"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/domain/models"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/engine/heuristics"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/engine/scoring"
 )
 
 // Recommender handles the generation of optimization recommendations.

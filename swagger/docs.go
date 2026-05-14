@@ -46,7 +46,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_domain_models.WorkloadMetrics"
+                                "$ref": "#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.WorkloadMetrics"
                             }
                         }
                     }
@@ -57,20 +57,20 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_domain_models.Recommendation"
+                                "$ref": "#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.Recommendation"
                             }
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_errors.ErrorResponse"
+                            "$ref": "#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_errors.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_errors.ErrorResponse"
+                            "$ref": "#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_errors.ErrorResponse"
                         }
                     }
                 }
@@ -132,7 +132,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_siddk_kube-resource-manager_internal_domain_models.EstimatedSavings": {
+        "github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.EstimatedSavings": {
             "type": "object",
             "properties": {
                 "cpu": {
@@ -145,7 +145,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_siddk_kube-resource-manager_internal_domain_models.Recommendation": {
+        "github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.Recommendation": {
             "type": "object",
             "properties": {
                 "confidence_score": {
@@ -164,7 +164,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "estimated_monthly_savings": {
-                    "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_domain_models.EstimatedSavings"
+                    "$ref": "#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.EstimatedSavings"
                 },
                 "memory_reduction_percent": {
                     "type": "integer"
@@ -189,7 +189,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_siddk_kube-resource-manager_internal_domain_models.WorkloadMetrics": {
+        "github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.WorkloadMetrics": {
             "description": "Workload identifier plus CPU/memory requests and average utilization (millicores and MiB).",
             "type": "object",
             "required": [
@@ -224,7 +224,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_siddk_kube-resource-manager_internal_errors.APIError": {
+        "github_com_SiddharthKarmokar_KubeResourceManager_internal_errors.APIError": {
             "type": "object",
             "properties": {
                 "code": {
@@ -237,11 +237,11 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_siddk_kube-resource-manager_internal_errors.ErrorResponse": {
+        "github_com_SiddharthKarmokar_KubeResourceManager_internal_errors.ErrorResponse": {
             "type": "object",
             "properties": {
                 "error": {
-                    "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_errors.APIError"
+                    "$ref": "#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_errors.APIError"
                 }
             }
         }

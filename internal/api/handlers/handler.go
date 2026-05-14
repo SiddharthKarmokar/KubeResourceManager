@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/siddk/kube-resource-manager/internal/api/dto"
-	domainmodels "github.com/siddk/kube-resource-manager/internal/domain/models"
-	"github.com/siddk/kube-resource-manager/internal/errors"
-	"github.com/siddk/kube-resource-manager/internal/services"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/api/dto"
+	domainmodels "github.com/SiddharthKarmokar/KubeResourceManager/internal/domain/models"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/errors"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/services"
 )
 
 // Handler handles HTTP API requests.

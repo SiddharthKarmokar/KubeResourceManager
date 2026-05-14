@@ -4,7 +4,7 @@ import (
 	"context"
 	"math"
 
-	"github.com/siddk/kube-resource-manager/internal/config"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/config"
 )
 
 // CalculateSafeCPU computes the recommended CPU request based on heuristics.

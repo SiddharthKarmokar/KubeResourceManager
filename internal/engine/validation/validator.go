@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/siddk/kube-resource-manager/internal/domain/models"
-	"github.com/siddk/kube-resource-manager/internal/errors"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/domain/models"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/errors"
 )
 
 var validate *validator.Validate

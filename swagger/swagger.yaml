@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  github_com_siddk_kube-resource-manager_internal_domain_models.EstimatedSavings:
+  github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.EstimatedSavings:
     properties:
       cpu:
         example: 0.73 cores
@@ -9,7 +9,7 @@ definitions:
         example: 1138 MB
         type: string
     type: object
-  github_com_siddk_kube-resource-manager_internal_domain_models.Recommendation:
+  github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.Recommendation:
     properties:
       confidence_score:
         type: number
@@ -22,7 +22,7 @@ definitions:
       deployment:
         type: string
       estimated_monthly_savings:
-        $ref: '#/definitions/github_com_siddk_kube-resource-manager_internal_domain_models.EstimatedSavings'
+        $ref: '#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.EstimatedSavings'
       memory_reduction_percent:
         type: integer
       reason:
@@ -38,7 +38,7 @@ definitions:
           type: string
         type: array
     type: object
-  github_com_siddk_kube-resource-manager_internal_domain_models.WorkloadMetrics:
+  github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.WorkloadMetrics:
     description: Workload identifier plus CPU/memory requests and average utilization
       (millicores and MiB).
     properties:
@@ -66,7 +66,7 @@ definitions:
     - memory_request
     - memory_usage_avg
     type: object
-  github_com_siddk_kube-resource-manager_internal_errors.APIError:
+  github_com_SiddharthKarmokar_KubeResourceManager_internal_errors.APIError:
     properties:
       code:
         example: INVALID_INPUT
@@ -75,15 +75,15 @@ definitions:
         example: CPU usage cannot exceed CPU request for this analysis
         type: string
     type: object
-  github_com_siddk_kube-resource-manager_internal_errors.ErrorResponse:
+  github_com_SiddharthKarmokar_KubeResourceManager_internal_errors.ErrorResponse:
     properties:
       error:
-        $ref: '#/definitions/github_com_siddk_kube-resource-manager_internal_errors.APIError'
+        $ref: '#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_errors.APIError'
     type: object
 host: localhost:8080
 info:
   contact:
-    email: support@example.com
+    email: siddkarmokar@gmail.com
     name: Siddharh Karmokar
     url: https://siddkarmokar-portfolio.vercel.app/
   description: Analyzes Kubernetes workload metrics and recommends safe CPU and memory
@@ -109,7 +109,7 @@ paths:
         required: true
         schema:
           items:
-            $ref: '#/definitions/github_com_siddk_kube-resource-manager_internal_domain_models.WorkloadMetrics'
+            $ref: '#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.WorkloadMetrics'
           type: array
       produces:
       - application/json
@@ -118,16 +118,16 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/github_com_siddk_kube-resource-manager_internal_domain_models.Recommendation'
+              $ref: '#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_domain_models.Recommendation'
             type: array
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_siddk_kube-resource-manager_internal_errors.ErrorResponse'
+            $ref: '#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_errors.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/github_com_siddk_kube-resource-manager_internal_errors.ErrorResponse'
+            $ref: '#/definitions/github_com_SiddharthKarmokar_KubeResourceManager_internal_errors.ErrorResponse'
       summary: Analyze workload metrics
       tags:
       - Optimization

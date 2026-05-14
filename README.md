@@ -101,7 +101,7 @@ Full documentation is available via MkDocs:
 make docs
 ```
 
-**Published docs (GitHub Pages):** [https://siddk.github.io/kube-resource-manager/](https://siddk.github.io/kube-resource-manager/)
+**Published docs (GitHub Pages):** [https://siddharthkarmokar.github.io/KubeResourceManager/](https://siddharthkarmokar.github.io/KubeResourceManager/)
 
 After forking, enable Pages from the `gh-pages` branch and update `site_url` in `mkdocs.yml` if your GitHub Pages URL differs.
 

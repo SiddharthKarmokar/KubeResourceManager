@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/siddk/kube-resource-manager/internal/config"
-	"github.com/siddk/kube-resource-manager/internal/domain/models"
-	"github.com/siddk/kube-resource-manager/internal/engine/scoring"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/config"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/domain/models"
+	"github.com/SiddharthKarmokar/KubeResourceManager/internal/engine/scoring"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

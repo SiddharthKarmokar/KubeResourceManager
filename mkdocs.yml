@@ -5,10 +5,10 @@ site_description: >-
 site_author: Siddharh Karmokar
 
 # GitHub Pages (project site). Update if you fork or rename the repository.
-site_url: https://siddk.github.io/kube-resource-manager/
+site_url: https://siddharthkarmokar.github.io/KubeResourceManager/
 
-repo_url: https://github.com/siddk/kube-resource-manager
-repo_name: siddk/kube-resource-manager
+repo_url: https://github.com/SiddharthKarmokar/KubeResourceManager
+repo_name: SiddharthKarmokar/KubeResourceManager
 edit_uri: edit/main/docs/
 
 docs_dir: docs
