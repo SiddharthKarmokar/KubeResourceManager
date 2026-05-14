@@ -1,0 +1,11 @@
+# Binaries
+bin/
+
+# MkDocs output (published via gh-pages workflow)
+site/
+
+# Coverage
+coverage.out
+
+# Go
+vendor/

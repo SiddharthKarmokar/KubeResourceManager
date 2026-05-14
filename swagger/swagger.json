@@ -1,0 +1,247 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Analyzes Kubernetes workload metrics and recommends safe CPU and memory requests using conservative heuristics, safety buffers, and guardrails.",
+        "title": "Kubernetes Resource Optimization API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Siddharh Karmokar",
+            "url": "https://siddkarmokar-portfolio.vercel.app/",
+            "email": "support@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/analyze": {
+            "post": {
+                "description": "Accepts a JSON array of workload metrics (CPU/memory request and average usage) and returns a JSON array of recommendations including confidence and severity.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Optimization"
+                ],
+                "summary": "Analyze workload metrics",
+                "parameters": [
+                    {
+                        "description": "Metrics batch (same schema as CLI JSON input)",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_domain_models.WorkloadMetrics"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_domain_models.Recommendation"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_errors.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_errors.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/healthz": {
+            "get": {
+                "description": "Returns 200 if the server is alive",
+                "tags": [
+                    "System"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/metrics": {
+            "get": {
+                "description": "Prometheus text exposition format (OpenMetrics / text/plain).",
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "Prometheus metrics",
+                "responses": {
+                    "200": {
+                        "description": "Prometheus metrics",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/readyz": {
+            "get": {
+                "description": "Returns 200 if the server is ready to accept traffic",
+                "tags": [
+                    "System"
+                ],
+                "summary": "Readiness check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_siddk_kube-resource-manager_internal_domain_models.EstimatedSavings": {
+            "type": "object",
+            "properties": {
+                "cpu": {
+                    "type": "string",
+                    "example": "0.73 cores"
+                },
+                "memory": {
+                    "type": "string",
+                    "example": "1138 MB"
+                }
+            }
+        },
+        "github_com_siddk_kube-resource-manager_internal_domain_models.Recommendation": {
+            "type": "object",
+            "properties": {
+                "confidence_score": {
+                    "type": "number"
+                },
+                "cpu_reduction_percent": {
+                    "type": "integer"
+                },
+                "current_cpu_request": {
+                    "type": "integer"
+                },
+                "current_memory_request": {
+                    "type": "integer"
+                },
+                "deployment": {
+                    "type": "string"
+                },
+                "estimated_monthly_savings": {
+                    "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_domain_models.EstimatedSavings"
+                },
+                "memory_reduction_percent": {
+                    "type": "integer"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "recommended_cpu": {
+                    "type": "integer"
+                },
+                "recommended_memory": {
+                    "type": "integer"
+                },
+                "severity": {
+                    "type": "string"
+                },
+                "warnings": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_siddk_kube-resource-manager_internal_domain_models.WorkloadMetrics": {
+            "description": "Workload identifier plus CPU/memory requests and average utilization (millicores and MiB).",
+            "type": "object",
+            "required": [
+                "cpu_request",
+                "cpu_usage_avg",
+                "deployment",
+                "memory_request",
+                "memory_usage_avg"
+            ],
+            "properties": {
+                "cpu_request": {
+                    "type": "integer",
+                    "example": 1000
+                },
+                "cpu_usage_avg": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 180
+                },
+                "deployment": {
+                    "type": "string",
+                    "example": "api-service"
+                },
+                "memory_request": {
+                    "type": "integer",
+                    "example": 2048
+                },
+                "memory_usage_avg": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 700
+                }
+            }
+        },
+        "github_com_siddk_kube-resource-manager_internal_errors.APIError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "INVALID_INPUT"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "CPU usage cannot exceed CPU request for this analysis"
+                }
+            }
+        },
+        "github_com_siddk_kube-resource-manager_internal_errors.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/github_com_siddk_kube-resource-manager_internal_errors.APIError"
+                }
+            }
+        }
+    }
+}

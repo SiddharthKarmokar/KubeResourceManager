@@ -1,0 +1,41 @@
+site_name: Kubernetes Resource Optimization Agent
+site_description: >-
+  Production-oriented Kubernetes workload CPU and memory recommendation service
+  (REST API + CLI) with conservative heuristics and safety guardrails.
+site_author: Siddharh Karmokar
+
+# GitHub Pages (project site). Update if you fork or rename the repository.
+site_url: https://siddk.github.io/kube-resource-manager/
+
+repo_url: https://github.com/siddk/kube-resource-manager
+repo_name: siddk/kube-resource-manager
+edit_uri: edit/main/docs/
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: readthedocs
+  highlightjs: true
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - API: api.md
+  - Recommendation engine: recommendation-engine.md
+  - Configuration: configuration.md
+  - Local development: local-development.md
+  - Deployment: deployment.md
+  - Observability & scaling: scaling.md
+  - Future improvements: future-improvements.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - fenced_code
+  - tables
+  - toc:
+      permalink: true
+
+strict: true

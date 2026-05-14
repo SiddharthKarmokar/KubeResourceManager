@@ -1,0 +1,16 @@
+[
+  {
+    "deployment": "api-service",
+    "cpu_request": 1000,
+    "cpu_usage_avg": 180,
+    "memory_request": 2048,
+    "memory_usage_avg": 700
+  },
+  {
+    "deployment": "worker-service",
+    "cpu_request": 500,
+    "cpu_usage_avg": 450,
+    "memory_request": 1024,
+    "memory_usage_avg": 900
+  }
+]
