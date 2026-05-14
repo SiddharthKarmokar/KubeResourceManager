@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Siddharh Karmokar" /><link rel="canonical" href="https://siddharthkarmokar.github.io/KubeResourceManager/configuration/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Configuration - Kubernetes Resource Optimization Agent</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Configuration";
+        var mkdocs_page_input_path = "configuration.md";
+        var mkdocs_page_url = "/KubeResourceManager/configuration/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Kubernetes Resource Optimization Agent
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../recommendation-engine/">Recommendation engine</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Configuration</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment variables</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#kubernetes-example">Kubernetes example</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#struct-binding-mapstructure">Struct binding (mapstructure)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#normalize-validate">Normalize + validate</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#operational-guidance">Operational guidance</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../local-development/">Local development</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../deployment/">Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../scaling/">Observability & scaling</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../future-improvements/">Future improvements</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Kubernetes Resource Optimization Agent</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Configuration</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager/edit/main/docs/configuration.md">Edit on SiddharthKarmokar/KubeResourceManager</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h1>
+<p>Configuration is loaded at process start via <strong>Viper</strong> (<code>internal/config</code>). Values can come from <strong>defaults</strong>, <strong>environment variables</strong>, or (if you extend <code>Load</code>) config files — the shipped <code>Load()</code> focuses on env + defaults.</p>
+<h2 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h2>
+<p>Viper maps nested keys with dots to env names using <strong><code>_</code></strong> (see <code>SetEnvKeyReplacer</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Maps to</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SERVER_PORT</code></td>
+<td><code>server.port</code></td>
+<td><code>8080</code></td>
+<td>HTTP listen port</td>
+</tr>
+<tr>
+<td><code>RECOMMENDATION_CPU_SAFETY_BUFFER</code></td>
+<td><code>recommendation.cpu_safety_buffer</code></td>
+<td><code>1.5</code></td>
+<td>Clamped to <strong>[1.0, 3.0]</strong></td>
+</tr>
+<tr>
+<td><code>RECOMMENDATION_MEMORY_SAFETY_BUFFER</code></td>
+<td><code>recommendation.memory_safety_buffer</code></td>
+<td><code>1.3</code></td>
+<td>Clamped to <strong>[1.0, 3.0]</strong></td>
+</tr>
+<tr>
+<td><code>RECOMMENDATION_MIN_CPU_MILLICORES</code></td>
+<td><code>recommendation.min_cpu_millicores</code></td>
+<td><code>100</code></td>
+<td>Floors below <strong>10</strong> repair to default</td>
+</tr>
+<tr>
+<td><code>RECOMMENDATION_MIN_MEMORY_MB</code></td>
+<td><code>recommendation.min_memory_mb</code></td>
+<td><code>128</code></td>
+<td>Floors below <strong>32</strong> repair to default</td>
+</tr>
+</tbody>
+</table>
+<h3 id="kubernetes-example">Kubernetes example<a class="headerlink" href="#kubernetes-example" title="Permanent link">&para;</a></h3>
+<p>See <code>deployments/kubernetes/configmap.yaml</code> for a ConfigMap that mirrors the variables above.</p>
+<h2 id="struct-binding-mapstructure">Struct binding (<code>mapstructure</code>)<a class="headerlink" href="#struct-binding-mapstructure" title="Permanent link">&para;</a></h2>
+<p>Nested configuration uses <strong>explicit <code>mapstructure</code> tags</strong> so snake_case keys bind reliably into Go structs. This avoids the classic pitfall where <code>Unmarshal</code> succeeds but leaves <strong>zero values</strong> for critical floats and ints.</p>
+<h2 id="normalize-validate">Normalize + validate<a class="headerlink" href="#normalize-validate" title="Permanent link">&para;</a></h2>
+<p>On startup:</p>
+<ol>
+<li><strong>Normalize</strong> repairs NaN/Inf, sub-minimum buffers, above-max buffers (high values clamp to the max instead of silently accepting runaway multipliers), and minimums that are too small for practical clusters.</li>
+<li>A <strong>warning</strong> is logged if anything was repaired.</li>
+<li><strong>Validate</strong> enforces invariants; failure prevents the process from serving traffic.</li>
+</ol>
+<h2 id="operational-guidance">Operational guidance<a class="headerlink" href="#operational-guidance" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Treat buffers as <strong>organizational policy</strong>: higher buffers are more conservative; values outside <code>[1, 3]</code> are rejected or clamped.</li>
+<li>Minimums should reflect your <strong>platform baseline</strong> (for example smallest workload you are willing to schedule).</li>
+<li>For GitOps, prefer pinning these values in a <strong>ConfigMap</strong> or external secrets manager rather than ad-hoc shell exports.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../recommendation-engine/" class="btn btn-neutral float-left" title="Recommendation engine"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../local-development/" class="btn btn-neutral float-right" title="Local development">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager" class="fa fa-code-fork" style="color: #fcfcfc"> SiddharthKarmokar/KubeResourceManager</a>
+        </span>
+    
+    
+      <span><a href="../recommendation-engine/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../local-development/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Siddharh Karmokar" /><link rel="canonical" href="https://siddharthkarmokar.github.io/KubeResourceManager/api/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>API - Kubernetes Resource Optimization Agent</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "API";
+        var mkdocs_page_input_path = "api.md";
+        var mkdocs_page_url = "/KubeResourceManager/api/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Kubernetes Resource Optimization Agent
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">API</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#conventions">Conventions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#system-endpoints">System endpoints</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#get-healthz">GET /healthz</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#get-readyz">GET /readyz</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#get-metrics">GET /metrics</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#get-swagger">GET /swagger/*</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#post-analyze">POST /analyze</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#request-body">Request body</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#validation-rules-business">Validation rules (business)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#success-response">Success response</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#error-responses">Error responses</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#curl-example">curl example</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#design-note-averages-only">Design note: averages only</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../recommendation-engine/">Recommendation engine</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../local-development/">Local development</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../deployment/">Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../scaling/">Observability & scaling</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../future-improvements/">Future improvements</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Kubernetes Resource Optimization Agent</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">API</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager/edit/main/docs/api.md">Edit on SiddharthKarmokar/KubeResourceManager</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="api-reference">API reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h1>
+<p>The HTTP API is a thin JSON interface over the same batch optimizer used by the CLI. There is <strong>no authentication</strong> in the default router; run it behind a private network, service mesh, or API gateway if you expose it beyond localhost.</p>
+<p><strong>Base URL (local):</strong> <code>http://localhost:8080</code></p>
+<h2 id="conventions">Conventions<a class="headerlink" href="#conventions" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Content-Type:</strong> <code>application/json</code> for <code>POST /analyze</code>.</li>
+<li><strong>Success responses</strong> return <strong>200</strong> with a JSON <strong>array</strong> body.</li>
+<li><strong>Errors</strong> return <strong>4xx/5xx</strong> with a JSON object shaped as <code>{"error": {"code": "...", "message": "..."}}</code>.</li>
+</ul>
+<h2 id="system-endpoints">System endpoints<a class="headerlink" href="#system-endpoints" title="Permanent link">&para;</a></h2>
+<h3 id="get-healthz"><code>GET /healthz</code><a class="headerlink" href="#get-healthz" title="Permanent link">&para;</a></h3>
+<p>Liveness probe. Returns <strong>200</strong> with body <code>OK</code>.</p>
+<h3 id="get-readyz"><code>GET /readyz</code><a class="headerlink" href="#get-readyz" title="Permanent link">&para;</a></h3>
+<p>Readiness probe. Returns <strong>200</strong> with body <code>OK</code> (extend with dependency checks as needed).</p>
+<h3 id="get-metrics"><code>GET /metrics</code><a class="headerlink" href="#get-metrics" title="Permanent link">&para;</a></h3>
+<p>Prometheus exposition format (text).</p>
+<h3 id="get-swagger"><code>GET /swagger/*</code><a class="headerlink" href="#get-swagger" title="Permanent link">&para;</a></h3>
+<p>Interactive <strong>Swagger UI</strong> plus <strong><code>doc.json</code></strong> (embedded OpenAPI 2.0 from <a href="https://github.com/swaggo/swag">swag</a>).</p>
+<ul>
+<li>UI entrypoint: <strong><code>/swagger/index.html</code></strong> (or <code>/swagger/</code> which redirects there).</li>
+<li>Spec JSON: <strong><code>/swagger/doc.json</code></strong> (served from the registered <code>swagger</code> package).</li>
+</ul>
+<p>Regenerate specs after changing handler annotations:</p>
+<pre><code class="language-bash">make swagger
+</code></pre>
+<p>Source of truth for the committed bundle lives under <strong><code>swagger/</code></strong> (<code>swagger.json</code>, <code>swagger.yaml</code>, <code>docs.go</code>).</p>
+<hr />
+<h2 id="post-analyze"><code>POST /analyze</code><a class="headerlink" href="#post-analyze" title="Permanent link">&para;</a></h2>
+<p>Analyzes one or more workloads and returns an array of recommendations.</p>
+<h3 id="request-body">Request body<a class="headerlink" href="#request-body" title="Permanent link">&para;</a></h3>
+<p>An array of <code>WorkloadMetrics</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Rules</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deployment</code></td>
+<td>string</td>
+<td>Required, non-empty</td>
+</tr>
+<tr>
+<td><code>cpu_request</code></td>
+<td>int</td>
+<td>Required, <strong>&gt; 0</strong> (millicores)</td>
+</tr>
+<tr>
+<td><code>cpu_usage_avg</code></td>
+<td>int</td>
+<td>Required, <strong>≥ 0</strong> (millicores average)</td>
+</tr>
+<tr>
+<td><code>memory_request</code></td>
+<td>int</td>
+<td>Required, <strong>&gt; 0</strong> (MiB)</td>
+</tr>
+<tr>
+<td><code>memory_usage_avg</code></td>
+<td>int</td>
+<td>Required, <strong>≥ 0</strong> (MiB average)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;deployment&quot;: &quot;api-service&quot;,
+    &quot;cpu_request&quot;: 1000,
+    &quot;cpu_usage_avg&quot;: 180,
+    &quot;memory_request&quot;: 2048,
+    &quot;memory_usage_avg&quot;: 700
+  }
+]
+</code></pre>
+<h3 id="validation-rules-business">Validation rules (business)<a class="headerlink" href="#validation-rules-business" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>cpu_usage_avg</code> must be <strong>≤</strong> <code>cpu_request</code>.</li>
+<li><code>memory_usage_avg</code> must be <strong>≤</strong> <code>memory_request</code>.</li>
+</ul>
+<p>Violations produce <strong>400</strong> with <code>INVALID_INPUT</code>.</p>
+<h3 id="success-response">Success response<a class="headerlink" href="#success-response" title="Permanent link">&para;</a></h3>
+<p><strong>200 OK</strong> — JSON array of <code>Recommendation</code> objects:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deployment</code></td>
+<td>string</td>
+<td>Workload name</td>
+</tr>
+<tr>
+<td><code>current_cpu_request</code></td>
+<td>int</td>
+<td>Echo of input CPU request</td>
+</tr>
+<tr>
+<td><code>recommended_cpu</code></td>
+<td>int</td>
+<td>Suggested CPU request (millicores)</td>
+</tr>
+<tr>
+<td><code>current_memory_request</code></td>
+<td>int</td>
+<td>Echo of input memory request</td>
+</tr>
+<tr>
+<td><code>recommended_memory</code></td>
+<td>int</td>
+<td>Suggested memory request (MiB)</td>
+</tr>
+<tr>
+<td><code>cpu_reduction_percent</code></td>
+<td>int</td>
+<td>Rounded percent reduction vs current CPU</td>
+</tr>
+<tr>
+<td><code>memory_reduction_percent</code></td>
+<td>int</td>
+<td>Rounded percent reduction vs current memory</td>
+</tr>
+<tr>
+<td><code>confidence_score</code></td>
+<td>float</td>
+<td>Heuristic confidence in <code>[0.10, 0.99]</code> (or fixed low when degraded)</td>
+</tr>
+<tr>
+<td><code>severity</code></td>
+<td>string</td>
+<td><code>low</code>, <code>moderate</code>, <code>high</code>, <code>critical</code>, or <code>degraded</code></td>
+</tr>
+<tr>
+<td><code>estimated_monthly_savings</code></td>
+<td>object</td>
+<td>Opaque strings for CPU/memory “savings” presentation</td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>string</td>
+<td>Human-readable summary</td>
+</tr>
+<tr>
+<td><code>warnings</code></td>
+<td>string[]</td>
+<td>Includes active buffer factors and data caveats</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example (truncated)</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;deployment&quot;: &quot;api-service&quot;,
+    &quot;current_cpu_request&quot;: 1000,
+    &quot;recommended_cpu&quot;: 270,
+    &quot;current_memory_request&quot;: 2048,
+    &quot;recommended_memory&quot;: 910,
+    &quot;cpu_reduction_percent&quot;: 73,
+    &quot;memory_reduction_percent&quot;: 56,
+    &quot;confidence_score&quot;: 0.85,
+    &quot;severity&quot;: &quot;high&quot;,
+    &quot;estimated_monthly_savings&quot;: {
+      &quot;cpu&quot;: &quot;0.73 cores&quot;,
+      &quot;memory&quot;: &quot;1138 MB&quot;
+    },
+    &quot;reason&quot;: &quot;Average usage significantly below requested resources with stable utilization patterns.&quot;,
+    &quot;warnings&quot;: [
+      &quot;Recommendation includes 1.5x CPU and 1.3x Memory safety buffer.&quot;,
+      &quot;Current implementation assumes point-in-time average utilization data only.&quot;
+    ]
+  }
+]
+</code></pre>
+<h3 id="error-responses">Error responses<a class="headerlink" href="#error-responses" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>400</strong></td>
+<td>Malformed JSON, validation failure, or empty batch</td>
+</tr>
+<tr>
+<td><strong>500</strong></td>
+<td>Unexpected internal failure</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Shape</strong></p>
+<pre><code class="language-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;INVALID_INPUT&quot;,
+    &quot;message&quot;: &quot;CPU usage cannot exceed CPU request for this analysis&quot;
+  }
+}
+</code></pre>
+<p><strong>Codes</strong> (non-exhaustive): <code>INVALID_INPUT</code>, <code>INVALID_REQUEST</code>, <code>INTERNAL_ERROR</code>, <code>NOT_FOUND</code>.</p>
+<h3 id="curl-example"><code>curl</code> example<a class="headerlink" href="#curl-example" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">curl -sS -X POST http://localhost:8080/analyze \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '[{
+    &quot;deployment&quot;: &quot;api-service&quot;,
+    &quot;cpu_request&quot;: 1000,
+    &quot;cpu_usage_avg&quot;: 180,
+    &quot;memory_request&quot;: 2048,
+    &quot;memory_usage_avg&quot;: 700
+  }]'
+</code></pre>
+<h2 id="design-note-averages-only">Design note: averages only<a class="headerlink" href="#design-note-averages-only" title="Permanent link">&para;</a></h2>
+<p>The API intentionally operates on <strong>averages</strong> (not P99/P999). Confidence and warnings call this out. Treat outputs as <strong>governance hints</strong>, not guaranteed SLO-safe limits, unless you enrich the model with tail metrics.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../architecture/" class="btn btn-neutral float-left" title="Architecture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../recommendation-engine/" class="btn btn-neutral float-right" title="Recommendation engine">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager" class="fa fa-code-fork" style="color: #fcfcfc"> SiddharthKarmokar/KubeResourceManager</a>
+        </span>
+    
+    
+      <span><a href="../architecture/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../recommendation-engine/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

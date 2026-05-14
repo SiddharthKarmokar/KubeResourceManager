@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Siddharh Karmokar" /><link rel="canonical" href="https://siddharthkarmokar.github.io/KubeResourceManager/scaling/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Observability & scaling - Kubernetes Resource Optimization Agent</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Observability \u0026 scaling";
+        var mkdocs_page_input_path = "scaling.md";
+        var mkdocs_page_url = "/KubeResourceManager/scaling/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Kubernetes Resource Optimization Agent
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../recommendation-engine/">Recommendation engine</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../local-development/">Local development</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../deployment/">Deployment</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Observability & scaling</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#metrics">Metrics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#horizontal-scaling">Horizontal scaling</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#performance-considerations">Performance considerations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rate-limiting">Rate limiting</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../future-improvements/">Future improvements</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Kubernetes Resource Optimization Agent</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Observability & scaling</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager/edit/main/docs/scaling.md">Edit on SiddharthKarmokar/KubeResourceManager</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="observability-and-scaling">Observability and scaling<a class="headerlink" href="#observability-and-scaling" title="Permanent link">&para;</a></h1>
+<h2 id="metrics">Metrics<a class="headerlink" href="#metrics" title="Permanent link">&para;</a></h2>
+<p>The router installs a Prometheus handler at <strong><code>GET /metrics</code></strong>. Histograms and counters include HTTP method, path, and status labels suitable for SRE dashboards.</p>
+<p><strong>Recommendation volume</strong> is tracked per <strong><code>severity</code></strong> label (values include <code>degraded</code> when finalize guardrails fire). Watch for spikes in <code>degraded</code> — they often indicate upstream metric quality issues or misconfigured environment overrides.</p>
+<h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h2>
+<p>The API uses <strong><code>log/slog</code></strong> with JSON output. Request middleware attaches contextual fields; the optimizer logs per-deployment severity and confidence at <strong>info</strong> level.</p>
+<h2 id="horizontal-scaling">Horizontal scaling<a class="headerlink" href="#horizontal-scaling" title="Permanent link">&para;</a></h2>
+<p>The service is <strong>stateless</strong>: you can run multiple replicas behind a load balancer as long as:</p>
+<ul>
+<li>Configuration is <strong>consistent</strong> across pods (same buffers/minimums unless you intentionally shard policy).</li>
+<li>Clients can <strong>POST full metric batches</strong> (no server-side session).</li>
+</ul>
+<h2 id="performance-considerations">Performance considerations<a class="headerlink" href="#performance-considerations" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Batch analysis is <strong>O(n)</strong> over workloads with minimal allocations in the hot path; tune <strong>request body limits</strong> at the ingress if untrusted clients can post huge arrays.</li>
+<li>Keep <strong>timeouts</strong> (<code>internal/api/router</code>) aligned with your ingress and client SLAs.</li>
+</ul>
+<h2 id="rate-limiting">Rate limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h2>
+<p>Not included in-tree. Terminate at <strong>API gateway</strong> (for example Kong, Envoy, NGINX) or service mesh policy when exposing beyond trusted networks.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../deployment/" class="btn btn-neutral float-left" title="Deployment"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../future-improvements/" class="btn btn-neutral float-right" title="Future improvements">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager" class="fa fa-code-fork" style="color: #fcfcfc"> SiddharthKarmokar/KubeResourceManager</a>
+        </span>
+    
+    
+      <span><a href="../deployment/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../future-improvements/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

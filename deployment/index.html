@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Siddharh Karmokar" /><link rel="canonical" href="https://siddharthkarmokar.github.io/KubeResourceManager/deployment/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Deployment - Kubernetes Resource Optimization Agent</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Deployment";
+        var mkdocs_page_input_path = "deployment.md";
+        var mkdocs_page_url = "/KubeResourceManager/deployment/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Kubernetes Resource Optimization Agent
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../recommendation-engine/">Recommendation engine</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../local-development/">Local development</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Deployment</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#docker-compose-local">Docker Compose (local)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#container-image">Container image</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#kubernetes">Kubernetes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#github-pages-documentation-site">GitHub Pages (documentation site)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#production-hardening-checklist">Production hardening checklist</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../scaling/">Observability & scaling</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../future-improvements/">Future improvements</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Kubernetes Resource Optimization Agent</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Deployment</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager/edit/main/docs/deployment.md">Edit on SiddharthKarmokar/KubeResourceManager</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">&para;</a></h1>
+<h2 id="docker-compose-local">Docker Compose (local)<a class="headerlink" href="#docker-compose-local" title="Permanent link">&para;</a></h2>
+<p>The repository includes <code>docker-compose.yml</code> for a single-service deployment. Typical flow:</p>
+<pre><code class="language-bash">docker compose up -d --build
+</code></pre>
+<p>The API listens on the host port mapped in the compose file (defaults align with <code>SERVER_PORT</code> / <code>8080</code>).</p>
+<h2 id="container-image">Container image<a class="headerlink" href="#container-image" title="Permanent link">&para;</a></h2>
+<p>Build manually:</p>
+<pre><code class="language-bash">make docker-build
+# or
+docker build -t k8s-opt:latest .
+</code></pre>
+<p>The <code>Dockerfile</code> multi-stage build produces a minimal runtime image with the API binary.</p>
+<h2 id="kubernetes">Kubernetes<a class="headerlink" href="#kubernetes" title="Permanent link">&para;</a></h2>
+<p>Manifests live under <code>deployments/kubernetes/</code>:</p>
+<ul>
+<li><code>deployment.yaml</code> — Deployment + Service skeleton</li>
+<li><code>configmap.yaml</code> — Example recommendation and server settings</li>
+</ul>
+<p>Wire the ConfigMap into the Deployment via envFrom or individual <code>env</code> entries, and set resource requests/limits appropriate to your cluster policy.</p>
+<h2 id="github-pages-documentation-site">GitHub Pages (documentation site)<a class="headerlink" href="#github-pages-documentation-site" title="Permanent link">&para;</a></h2>
+<p>CI builds MkDocs on pushes to <code>main</code> (when docs change) and publishes the static <code>site/</code> output to the <strong><code>gh-pages</code></strong> branch.</p>
+<p><strong>Enable Pages:</strong> Repository <strong>Settings → Pages → Build and deployment → Source: Deploy from a branch → <code>gh-pages</code> / <code>/ (root)</code></strong>.</p>
+<p>Canonical URLs are set in <code>mkdocs.yml</code> for <strong><code>SiddharthKarmokar/KubeResourceManager</code></strong>; adjust <code>site_url</code> / <code>repo_url</code> if you rename the repository.</p>
+<h2 id="production-hardening-checklist">Production hardening checklist<a class="headerlink" href="#production-hardening-checklist" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Place the API <strong>behind authentication</strong> (gateway, mesh, or private networking).</li>
+<li>Scrape <strong><code>/metrics</code></strong> with Prometheus and alert on error rates and latency.</li>
+<li>Run <strong><code>/readyz</code></strong> checks that validate any future external dependencies.</li>
+<li>Pin container images by digest in Kubernetes; avoid <code>:latest</code> in prod.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../local-development/" class="btn btn-neutral float-left" title="Local development"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../scaling/" class="btn btn-neutral float-right" title="Observability & scaling">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager" class="fa fa-code-fork" style="color: #fcfcfc"> SiddharthKarmokar/KubeResourceManager</a>
+        </span>
+    
+    
+      <span><a href="../local-development/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../scaling/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Siddharh Karmokar" /><link rel="canonical" href="https://siddharthkarmokar.github.io/KubeResourceManager/future-improvements/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Future improvements - Kubernetes Resource Optimization Agent</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Future improvements";
+        var mkdocs_page_input_path = "future-improvements.md";
+        var mkdocs_page_url = "/KubeResourceManager/future-improvements/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Kubernetes Resource Optimization Agent
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../recommendation-engine/">Recommendation engine</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../local-development/">Local development</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../deployment/">Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../scaling/">Observability & scaling</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Future improvements</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#metrics-statistics">Metrics &amp; statistics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#policy-multi-tenancy">Policy &amp; multi-tenancy</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#control-plane-integration">Control plane integration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#data-plane">Data plane</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#api-surface">API surface</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#non-goals-recap">Non-goals (recap)</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Kubernetes Resource Optimization Agent</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Future improvements</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager/edit/main/docs/future-improvements.md">Edit on SiddharthKarmokar/KubeResourceManager</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="future-improvements">Future improvements<a class="headerlink" href="#future-improvements" title="Permanent link">&para;</a></h1>
+<p>This section tracks <strong>directionally accurate</strong> enhancements that fit the current architecture without rewriting it.</p>
+<h2 id="metrics-statistics">Metrics &amp; statistics<a class="headerlink" href="#metrics-statistics" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Ingest <strong>percentile</strong> CPU/memory series (P90/P99) alongside averages.</li>
+<li>Weight recommendations by <strong>seasonality</strong> or <strong>deployment class</strong> (batch vs serving).</li>
+</ul>
+<h2 id="policy-multi-tenancy">Policy &amp; multi-tenancy<a class="headerlink" href="#policy-multi-tenancy" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Pluggable <strong>policy engine</strong> (OPA/Cedar) to enforce org-specific floors per namespace.</li>
+<li>Per-tenant <strong>buffer overrides</strong> sourced from CRDs instead of global env.</li>
+</ul>
+<h2 id="control-plane-integration">Control plane integration<a class="headerlink" href="#control-plane-integration" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Optional <strong>admission webhook</strong> or <strong>VPA integration</strong> that reads recommendations as <strong>hints</strong> rather than blind patches.</li>
+<li><strong>Dry-run</strong> mode returning a <strong>diff</strong> against live Deployment specs.</li>
+</ul>
+<h2 id="data-plane">Data plane<a class="headerlink" href="#data-plane" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Optional <strong>PostgreSQL</strong> or <strong>S3</strong> artifact store for historical runs and audit trails.</li>
+<li><strong>Idempotent</strong> batch job mode (CLI + CronJob) writing structured reports.</li>
+</ul>
+<h2 id="api-surface">API surface<a class="headerlink" href="#api-surface" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Optional <strong>JWT</strong> or <strong>mTLS</strong> hooks documented as deployment patterns.</li>
+<li>Pagination / streaming for <strong>very large</strong> batches.</li>
+</ul>
+<h2 id="non-goals-recap">Non-goals (recap)<a class="headerlink" href="#non-goals-recap" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Becoming a full <strong>cost optimization</strong> suite (node pricing, reservations) without additional data sources.</li>
+<li>Replacing <strong>HPA</strong> or <strong>cluster autoscaler</strong> decision loops.</li>
+</ul>
+<p>Contributions should keep the <strong>finalize</strong> guardrails and <strong>config validation</strong> paths strong — they are what keep recommendations trustworthy when the world is messy.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../scaling/" class="btn btn-neutral float-left" title="Observability & scaling"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager" class="fa fa-code-fork" style="color: #fcfcfc"> SiddharthKarmokar/KubeResourceManager</a>
+        </span>
+    
+    
+      <span><a href="../scaling/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

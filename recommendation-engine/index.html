@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Siddharh Karmokar" /><link rel="canonical" href="https://siddharthkarmokar.github.io/KubeResourceManager/recommendation-engine/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Recommendation engine - Kubernetes Resource Optimization Agent</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Recommendation engine";
+        var mkdocs_page_input_path = "recommendation-engine.md";
+        var mkdocs_page_url = "/KubeResourceManager/recommendation-engine/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Kubernetes Resource Optimization Agent
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Recommendation engine</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#pipeline-per-workload">Pipeline (per workload)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#severity">Severity</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#confidence-heuristic">Confidence heuristic</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#workload-archetypes-expected-behavior">Workload archetypes (expected behavior)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#related-code">Related code</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../local-development/">Local development</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../deployment/">Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../scaling/">Observability & scaling</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../future-improvements/">Future improvements</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Kubernetes Resource Optimization Agent</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Recommendation engine</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager/edit/main/docs/recommendation-engine.md">Edit on SiddharthKarmokar/KubeResourceManager</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="recommendation-engine">Recommendation engine<a class="headerlink" href="#recommendation-engine" title="Permanent link">&para;</a></h1>
+<p>The engine turns <strong>average utilization</strong> and <strong>declared requests</strong> into <strong>conservative</strong> recommendations. It is deliberately small and testable: heuristics propose a draft, policy caps growth, <strong>finalize</strong> enforces hard invariants, and <strong>scoring</strong> summarizes risk.</p>
+<h2 id="pipeline-per-workload">Pipeline (per workload)<a class="headerlink" href="#pipeline-per-workload" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Heuristics (CPU)</strong> — <code>round(cpu_usage_avg × cpu_safety_buffer)</code> then floor to <code>min_cpu_millicores</code>. The effective buffer is never below <strong>1.0</strong> even if configuration were corrupted (defense in depth after startup normalization).</li>
+<li><strong>Heuristics (memory)</strong> — same pattern with <code>memory_safety_buffer</code> and <code>min_memory_mb</code>.</li>
+<li><strong>Downsize-only cap</strong> — if the draft exceeds the submitted <code>cpu_request</code> / <code>memory_request</code>, it is clamped back to the current request (the service does not recommend <strong>increasing</strong> requests from this endpoint).</li>
+<li><strong>Finalize (guardrails)</strong>  </li>
+<li>Never return <strong>zero</strong> when the corresponding request is positive.  </li>
+<li>Never recommend <strong>below</strong> observed average usage.  </li>
+<li>Apply configured <strong>minimum floors</strong> and a minimum of <strong>1</strong> unit when requests are positive.  </li>
+<li>Clamp back to <strong>≤ current request</strong> after raising floors.  </li>
+<li>If the draft was <strong>zero or below usage</strong> before repair, the item is marked <strong>degraded</strong> for scoring.</li>
+<li><strong>Scoring</strong> — derives <code>confidence_score</code> and <code>severity</code>.</li>
+</ol>
+<h2 id="severity">Severity<a class="headerlink" href="#severity" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>low</code></td>
+<td>Small modeled waste (low reduction percentages).</td>
+</tr>
+<tr>
+<td><code>moderate</code></td>
+<td>Meaningful but not extreme reduction.</td>
+</tr>
+<tr>
+<td><code>high</code></td>
+<td>Large reduction opportunity.</td>
+</tr>
+<tr>
+<td><code>critical</code></td>
+<td>Very large reduction opportunity (<strong>only when not degraded</strong>).</td>
+</tr>
+<tr>
+<td><code>degraded</code></td>
+<td>Emergency clamps fired; <strong>do not</strong> interpret reduction magnitude as a confident FinOps signal until metrics/config are reviewed.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="confidence-heuristic">Confidence heuristic<a class="headerlink" href="#confidence-heuristic" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Baseline <strong>0.85</strong> when both CPU and memory usage averages are <strong>&gt; 0</strong>.</li>
+<li>If both <code>recommended / usage</code> ratios exceed <strong>2.0</strong>, a small boost applies.</li>
+<li>If either ratio falls <strong>below 1.2</strong>, a penalty applies (tighter headroom vs averages).</li>
+<li>If either average is <strong>zero</strong>, a penalty applies and ratios are <strong>not</strong> divided (avoids NaN/Inf).</li>
+<li>If the workload is <strong>degraded</strong>, confidence is pinned low (<strong>0.25</strong>) so automation does not over-trust the number.</li>
+</ul>
+<h2 id="workload-archetypes-expected-behavior">Workload archetypes (expected behavior)<a class="headerlink" href="#workload-archetypes-expected-behavior" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Typical signal</th>
+<th>Expected outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Heavily over-provisioned</td>
+<td>Usage ≪ request</td>
+<td>Meaningful <strong>reduction</strong> with moderate/high severity (if not degraded)</td>
+</tr>
+<tr>
+<td>Well provisioned</td>
+<td>Usage near request</td>
+<td><strong>Little or no reduction</strong>, low severity</td>
+</tr>
+<tr>
+<td>Nearly saturated</td>
+<td>Usage approaches request</td>
+<td><strong>No reduction</strong> after caps; may show <strong>low confidence</strong> if ratios sit near buffers</td>
+</tr>
+<tr>
+<td>Invalid metrics</td>
+<td>Usage &gt; request</td>
+<td><strong>400</strong> from validation (by design today)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-code">Related code<a class="headerlink" href="#related-code" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>internal/engine/heuristics</code> — draft math  </li>
+<li><code>internal/engine/recommendation</code> — orchestration + finalize  </li>
+<li><code>internal/engine/scoring</code> — confidence + severity  </li>
+<li><code>internal/config</code> — buffers, floors, validation  </li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../api/" class="btn btn-neutral float-left" title="API"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../configuration/" class="btn btn-neutral float-right" title="Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/SiddharthKarmokar/KubeResourceManager" class="fa fa-code-fork" style="color: #fcfcfc"> SiddharthKarmokar/KubeResourceManager</a>
+        </span>
+    
+    
+      <span><a href="../api/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../configuration/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
